@@ -11,7 +11,32 @@ import type {
   ServiceSlug,
 } from '@/types'
 
-const baseURL = import.meta.env.VITE_API_URL ?? '/api'
+function normalizeApiBase(url: string): string {
+  const trimmed = url.trim().replace(/\/+$/, '')
+  return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`
+}
+
+function resolveApiBaseUrl(): string {
+  // 1) Explicit override always wins (for any environment)
+  if (import.meta.env.VITE_API_URL) {
+    return normalizeApiBase(import.meta.env.VITE_API_URL)
+  }
+
+  // 2) Local dev defaults to Vite proxy (/api -> localhost backend)
+  if (import.meta.env.DEV) {
+    return '/api'
+  }
+
+  // 3) Production defaults to Render backend if provided
+  if (import.meta.env.VITE_RENDER_API_URL) {
+    return normalizeApiBase(import.meta.env.VITE_RENDER_API_URL)
+  }
+
+  // 4) Final fallback: same-origin /api
+  return '/api'
+}
+
+const baseURL = resolveApiBaseUrl()
 
 export const api = axios.create({
   baseURL,
