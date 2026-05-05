@@ -3,13 +3,22 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="ignore")
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+    )
 
     database_url: str = Field(alias="DATABASE_URL")
 
     jwt_secret_key: str = Field(alias="JWT_SECRET_KEY", min_length=32)
     jwt_algorithm: str = Field(default="HS256", alias="JWT_ALGORITHM")
-    access_token_expire_minutes: int = Field(default=480, alias="ACCESS_TOKEN_EXPIRE_MINUTES")
+    access_token_expire_minutes: int = Field(
+        default=480,
+        alias="ACCESS_TOKEN_EXPIRE_MINUTES",
+    )
+    admin_email: str | None = Field(default=None, alias="ADMIN_EMAIL")
+    admin_password: str | None = Field(default=None, alias="ADMIN_PASSWORD")
 
     resend_api_key: str | None = Field(default=None, alias="RESEND_API_KEY")
     email_from: str = Field(default="noreply@example.com", alias="EMAIL_FROM")
@@ -23,7 +32,10 @@ class Settings(BaseSettings):
     frontend_url: str = Field(default="http://localhost:5173", alias="FRONTEND_URL")
     admin_url: str = Field(default="http://localhost:5173", alias="ADMIN_URL")
 
-    cors_origins: list[str] = Field(default_factory=lambda: ["http://localhost:5173"], alias="CORS_ORIGINS")
+    cors_origins: list[str] = Field(
+        default_factory=lambda: ["http://localhost:5173"],
+        alias="CORS_ORIGINS",
+    )
 
     @field_validator("cors_origins", mode="before")
     @classmethod
