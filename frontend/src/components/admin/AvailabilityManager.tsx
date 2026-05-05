@@ -48,12 +48,43 @@ function groupByDate(slots: AdminSlot[]): Map<string, AdminSlot[]> {
   return m
 }
 
+/** HH:mm times from start through end inclusive, stepping by interval (matches backend iter_time_strings). */
+function expandTimeRange(start: string, end: string, intervalMinutes: number): string[] {
+  if (!Number.isFinite(intervalMinutes) || intervalMinutes < 5) return []
+
+  const toMinutes = (s: string) => {
+    const m = /^(\d{1,2}):(\d{2})$/.exec(s.trim())
+    if (!m) return NaN
+    const h = Number(m[1])
+    const mi = Number(m[2])
+    if (h > 23 || mi > 59) return NaN
+    return h * 60 + mi
+  }
+
+  const a = toMinutes(start)
+  const b = toMinutes(end)
+  if (Number.isNaN(a) || Number.isNaN(b) || a > b) return []
+
+  const pad = (n: number) => String(n).padStart(2, '0')
+  const out: string[] = []
+  for (let cur = a; cur <= b; cur += intervalMinutes) {
+    const hh = Math.floor(cur / 60)
+    const mm = cur % 60
+    if (hh > 23) break
+    out.push(`${pad(hh)}:${pad(mm)}`)
+  }
+  return out
+}
+
 export function AvailabilityManager() {
   const { t } = useI18n()
   const qc = useQueryClient()
   const [cursor, setCursor] = useState(() => startOfMonth(new Date()))
   const [editorDate, setEditorDate] = useState<string | null>(null)
   const [newTime, setNewTime] = useState('09:00')
+  const [dayRangeStart, setDayRangeStart] = useState('09:00')
+  const [dayRangeEnd, setDayRangeEnd] = useState('17:00')
+  const [dayRangeInterval, setDayRangeInterval] = useState(30)
   const [bulkOpen, setBulkOpen] = useState(false)
   const [bulkStart, setBulkStart] = useState(format(new Date(), 'yyyy-MM-dd'))
   const [bulkEnd, setBulkEnd] = useState(format(endOfMonth(new Date()), 'yyyy-MM-dd'))
@@ -282,23 +313,78 @@ export function AvailabilityManager() {
               </li>
             ))}
           </ul>
-          <div className="flex flex-wrap items-end gap-2">
+          <div className="space-y-4">
             <div>
-              <Label htmlFor="new_time">{t('admin.availAddTimeLabel')}</Label>
-              <Input
-                id="new_time"
-                className="mt-1 w-32 font-mono"
-                value={newTime}
-                onChange={(e) => setNewTime(e.target.value)}
-              />
+              <p className="mb-2 text-xs font-medium text-ink/70">{t('admin.availAddOneSlot')}</p>
+              <div className="flex flex-wrap items-end gap-2">
+                <div>
+                  <Label htmlFor="new_time">{t('admin.availAddTimeLabel')}</Label>
+                  <Input
+                    id="new_time"
+                    className="mt-1 w-32 font-mono"
+                    value={newTime}
+                    onChange={(e) => setNewTime(e.target.value)}
+                  />
+                </div>
+                <Button
+                  type="button"
+                  disabled={!editorDate || addSlots.isPending}
+                  onClick={() => editorDate && addSlots.mutate({ date: editorDate, times: [newTime] })}
+                >
+                  {t('admin.availAddSlot')}
+                </Button>
+              </div>
             </div>
-            <Button
-              type="button"
-              disabled={!editorDate || addSlots.isPending}
-              onClick={() => editorDate && addSlots.mutate({ date: editorDate, times: [newTime] })}
-            >
-              {t('admin.availAddSlot')}
-            </Button>
+            <div className="border-t border-brand-navy/10 pt-4">
+              <p className="mb-2 text-xs font-medium text-ink/70">{t('admin.availAddRangeSection')}</p>
+              <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                <div className="col-span-1">
+                  <Label htmlFor="day_range_from">{t('admin.availFrom')}</Label>
+                  <Input
+                    id="day_range_from"
+                    className="mt-1 font-mono"
+                    value={dayRangeStart}
+                    onChange={(e) => setDayRangeStart(e.target.value)}
+                  />
+                </div>
+                <div className="col-span-1">
+                  <Label htmlFor="day_range_to">{t('admin.availTo')}</Label>
+                  <Input
+                    id="day_range_to"
+                    className="mt-1 font-mono"
+                    value={dayRangeEnd}
+                    onChange={(e) => setDayRangeEnd(e.target.value)}
+                  />
+                </div>
+                <div className="col-span-2 sm:col-span-2">
+                  <Label htmlFor="day_range_interval">{t('admin.availInterval')}</Label>
+                  <Input
+                    id="day_range_interval"
+                    type="number"
+                    min={5}
+                    className="mt-1"
+                    value={dayRangeInterval}
+                    onChange={(e) => setDayRangeInterval(Number(e.target.value))}
+                  />
+                </div>
+              </div>
+              <Button
+                type="button"
+                className="mt-3"
+                disabled={!editorDate || addSlots.isPending}
+                onClick={() => {
+                  if (!editorDate) return
+                  const times = expandTimeRange(dayRangeStart, dayRangeEnd, dayRangeInterval)
+                  if (times.length === 0) {
+                    toast.error(t('admin.availInvalidRange'))
+                    return
+                  }
+                  addSlots.mutate({ date: editorDate, times })
+                }}
+              >
+                {t('admin.availAddRangeBtn')}
+              </Button>
+            </div>
           </div>
           <DialogFooter className="gap-2 sm:justify-between">
             <Button type="button" variant="outline" className="border-rose-200 text-rose-700" onClick={clearDate}>
