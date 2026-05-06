@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlmodel import Session, select
 
 from app.config import get_settings
-from app.database import engine
+from app.database import engine, init_db
 from app.models import AdminUser
 from app.routers import admin, appointments, availability, contact
 from app.utils.auth import hash_password, verify_password
@@ -27,6 +27,11 @@ app.include_router(availability.router, prefix="/api")
 app.include_router(appointments.router, prefix="/api")
 app.include_router(contact.router, prefix="/api")
 app.include_router(admin.router, prefix="/api")
+
+
+@app.on_event("startup")
+def startup_create_tables() -> None:
+    init_db()
 
 
 @app.on_event("startup")

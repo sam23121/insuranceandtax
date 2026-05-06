@@ -558,6 +558,8 @@ export const dictionary = {
       submitting: 'Submitting…',
       datesLoadErrorToast: 'Could not load available dates.',
       formErrorGeneric: 'Something went wrong. Please try again.',
+      formErrorNetwork:
+        'Could not reach the server. Use https:// for your API URL on Vercel, set VITE_RENDER_API_URL to your Render backend, and add your exact site URL to CORS_ORIGINS on Render.',
       slotTaken: ' (taken)',
       calendarPrevMonth: 'Previous month',
       calendarNextMonth: 'Next month',
@@ -854,6 +856,8 @@ export const dictionary = {
       submitting: 'በመላክ ላይ…',
       datesLoadErrorToast: 'የሚገኙ ቀናት አልተጫኑም።',
       formErrorGeneric: 'ስህተት ተፈጥሯል። እንደገና ይሞክሩ።',
+      formErrorNetwork:
+        'ከሰርቨር ጋር ግንኙነት አልተሳካም። በVercel ላይ https:// ያለውን API ይጠቀሙ፣ VITE_RENDER_API_URL ወደ Render ይቀናበሩ፣ በRender ላይ CORS_ORIGINS ውስጥ የጣቢያዎን ትክክለኛ URL ያክሉ።',
       slotTaken: ' (ተያዘ)',
       calendarPrevMonth: 'ያለፈው ወር',
       calendarNextMonth: 'ቀጣይ ወር',

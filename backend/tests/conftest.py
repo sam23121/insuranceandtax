@@ -5,6 +5,9 @@ import os
 os.environ.setdefault("DATABASE_URL", "sqlite://")
 os.environ.setdefault("JWT_SECRET_KEY", "01234567890123456789012345678901")
 os.environ.setdefault("CORS_ORIGINS", '["http://localhost:5173"]')
+# Block admin sync from local .env during tests (Settings reads .env before app import).
+os.environ["ADMIN_EMAIL"] = ""
+os.environ["ADMIN_PASSWORD"] = ""
 
 from datetime import date, time
 

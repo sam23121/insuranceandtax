@@ -90,7 +90,13 @@ export function BookingPage() {
     } catch (e) {
       if (isAxiosError(e)) {
         const d = e.response?.data as { detail?: string } | undefined
-        setFormError(typeof d?.detail === 'string' ? d.detail : e.message)
+        if (typeof d?.detail === 'string') {
+          setFormError(d.detail)
+        } else if (!e.response && (e.code === 'ERR_NETWORK' || e.message === 'Network Error')) {
+          setFormError(t('booking.formErrorNetwork'))
+        } else {
+          setFormError(e.message || t('booking.formErrorGeneric'))
+        }
       } else {
         setFormError(t('booking.formErrorGeneric'))
       }

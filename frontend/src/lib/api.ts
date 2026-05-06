@@ -16,10 +16,19 @@ function normalizeApiBase(url: string): string {
   return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`
 }
 
+/** HTTPS pages cannot call http:// APIs (browser mixed content → axios "Network Error"). */
+function forceHttpsInProduction(url: string): string {
+  const u = url.trim()
+  if (!import.meta.env.PROD || !u.startsWith('http://')) {
+    return u
+  }
+  return `https://${u.slice('http://'.length)}`
+}
+
 function resolveApiBaseUrl(): string {
   // 1) Explicit override always wins (for any environment)
   if (import.meta.env.VITE_API_URL) {
-    return normalizeApiBase(import.meta.env.VITE_API_URL)
+    return normalizeApiBase(forceHttpsInProduction(import.meta.env.VITE_API_URL))
   }
 
   // 2) Local dev defaults to Vite proxy (/api -> localhost backend)
@@ -29,7 +38,7 @@ function resolveApiBaseUrl(): string {
 
   // 3) Production defaults to Render backend if provided
   if (import.meta.env.VITE_RENDER_API_URL) {
-    return normalizeApiBase(import.meta.env.VITE_RENDER_API_URL)
+    return normalizeApiBase(forceHttpsInProduction(import.meta.env.VITE_RENDER_API_URL))
   }
 
   // 4) Final fallback: same-origin /api

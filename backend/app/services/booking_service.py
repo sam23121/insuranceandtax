@@ -1,4 +1,4 @@
-from datetime import date, datetime, time, timezone
+from datetime import datetime, time, timezone
 from uuid import UUID
 
 from sqlmodel import Session, select

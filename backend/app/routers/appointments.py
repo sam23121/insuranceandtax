@@ -3,9 +3,9 @@ from sqlmodel import Session
 
 from app.constants import SERVICE_SLUGS
 from app.database import get_session
+from app.models import AvailabilitySlot
 from app.schemas.common import AppointmentCreatedOut, CreateAppointmentBody
 from app.services.booking_service import create_booking, format_time
-from app.models import AvailabilitySlot
 
 router = APIRouter(prefix="/appointments", tags=["appointments"])
 
