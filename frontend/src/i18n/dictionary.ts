@@ -448,7 +448,7 @@ export const dictionary = {
       address: siteConfig.addressEn,
       phone: siteConfig.phone,
       email: siteConfig.email,
-      hours: 'Monday – Friday: 9:00 AM – 6:00 PM · Saturday: 10:00 AM – 2:00 PM · Closed Sunday',
+      hours: siteConfig.hoursEn,
     },
     nav: {
       home: 'Home',
@@ -747,7 +747,7 @@ export const dictionary = {
       address: siteConfig.addressAm,
       phone: siteConfig.phone,
       email: siteConfig.email,
-      hours: 'ሰኞ–አርብ፦ 9፡00 ሰዓት – 6፡00 ሰዓት · ቅዳሜ፦ 10፡00 – 2፡00 · እሑድ ዝግጁ',
+      hours: siteConfig.hoursAm,
     },
     nav: {
       home: 'መነሻ',

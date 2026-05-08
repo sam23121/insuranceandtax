@@ -21,9 +21,21 @@ export function ServicesGrid() {
           {services.map((service) => {
             const Icon = service.icon
             return (
-              <Card key={service.slug} className="group transition-shadow hover:shadow-lg">
-                <CardContent className="flex flex-col gap-4 p-6">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-cream text-brand-navy">
+              <Card
+                key={service.slug}
+                className="group relative overflow-hidden transition-shadow hover:shadow-lg"
+              >
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-cover bg-center opacity-25 transition-opacity duration-300 group-hover:opacity-35"
+                  style={{ backgroundImage: `url(${service.image})` }}
+                />
+                <div
+                  aria-hidden
+                  className="absolute inset-0 bg-gradient-to-br from-white/92 via-white/88 to-brand-cream/82"
+                />
+                <CardContent className="relative flex flex-col gap-4 p-6">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-cream text-brand-navy shadow-sm ring-1 ring-brand-navy/10">
                     <Icon className="h-6 w-6" />
                   </div>
                   <div>

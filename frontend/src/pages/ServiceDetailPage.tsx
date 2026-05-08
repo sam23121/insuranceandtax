@@ -26,8 +26,19 @@ export function ServiceDetailPage({ slug }: ServiceDetailPageProps) {
         className="relative overflow-hidden bg-brand-navy py-20 text-white sm:py-28"
         aria-labelledby="service-hero-title"
       >
+        {nav?.image && (
+          <div
+            aria-hidden
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ backgroundImage: `url(${nav.image})` }}
+          />
+        )}
         <div
-          className="absolute inset-0 opacity-30"
+          aria-hidden
+          className="absolute inset-0 bg-gradient-to-br from-brand-navy/55 via-brand-navy/45 to-brand-navy/65"
+        />
+        <div
+          className="absolute inset-0 opacity-20"
           style={{
             background:
               'radial-gradient(circle at 20% 50%, rgba(212,160,23,0.35) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(248,246,241,0.15) 0%, transparent 40%)',

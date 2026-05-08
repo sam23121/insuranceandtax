@@ -16,9 +16,18 @@ export function ServicesPage() {
         {services.map((s) => {
           const Icon = s.icon
           return (
-            <Card key={s.slug} className="transition-shadow hover:shadow-md">
-              <CardContent className="flex flex-col gap-4 p-6">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-navy/10 text-brand-navy">
+            <Card key={s.slug} className="group relative overflow-hidden transition-shadow hover:shadow-md">
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-cover bg-center opacity-25 transition-opacity duration-300 group-hover:opacity-35"
+                style={{ backgroundImage: `url(${s.image})` }}
+              />
+              <div
+                aria-hidden
+                className="absolute inset-0 bg-gradient-to-br from-white/92 via-white/88 to-brand-cream/82"
+              />
+              <CardContent className="relative flex flex-col gap-4 p-6">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-navy/10 text-brand-navy shadow-sm ring-1 ring-brand-navy/10">
                   <Icon className="h-6 w-6" />
                 </div>
                 <div>
