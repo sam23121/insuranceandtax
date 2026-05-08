@@ -23,7 +23,11 @@ export const siteConfig = {
 
   /** Public business email — shown in footer, contact page, mailto links. */
   email: 'nahom@nahominsuranceandtax.com',
-  /** Public business phone — shown in footer, contact page, tel: links. Format freely; tel: links strip non-digits automatically. */
+  /**
+   * Public phone numbers — shown in footer and on the contact page.
+   * Office and mobile become clickable tel: links (non-digits are stripped automatically).
+   * Fax is rendered as plain text. Format freely.
+   */
   officePhone: '(702) 778-5585',
   mobilePhone: '(702) 502-7553',
   faxPhone: '(702) 778-5586',

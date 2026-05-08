@@ -57,15 +57,31 @@ export function ContactPage() {
           <CardContent className="space-y-4 text-sm text-ink/80">
             <p>{t('business.address')}</p>
             <p>
-              <span className="font-medium text-brand-navy">{t('contact.phoneLabel')} </span>
-              <a href={`tel:${t('business.phone').replace(/\D/g, '')}`} className="text-brand-gold hover:underline">
-                {t('business.phone')}
+              <span className="font-medium text-brand-navy">{t('contact.officePhoneLabel')} </span>
+              <a
+                href={`tel:${siteConfig.officePhone.replace(/\D/g, '')}`}
+                className="text-brand-gold hover:underline"
+              >
+                {siteConfig.officePhone}
               </a>
             </p>
             <p>
+              <span className="font-medium text-brand-navy">{t('contact.mobilePhoneLabel')} </span>
+              <a
+                href={`tel:${siteConfig.mobilePhone.replace(/\D/g, '')}`}
+                className="text-brand-gold hover:underline"
+              >
+                {siteConfig.mobilePhone}
+              </a>
+            </p>
+            <p>
+              <span className="font-medium text-brand-navy">{t('contact.faxPhoneLabel')} </span>
+              <span>{siteConfig.faxPhone}</span>
+            </p>
+            <p>
               <span className="font-medium text-brand-navy">{t('contact.emailLabel')} </span>
-              <a href={`mailto:${t('business.email')}`} className="text-brand-gold hover:underline">
-                {t('business.email')}
+              <a href={`mailto:${siteConfig.email}`} className="text-brand-gold hover:underline">
+                {siteConfig.email}
               </a>
             </p>
             <div>

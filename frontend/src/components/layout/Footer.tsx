@@ -16,24 +16,32 @@ export function Footer() {
             <p className="font-heading text-2xl font-semibold text-white">{t('business.name')}</p>
             <p className="mt-2 max-w-md text-sm text-brand-cream/80">{t('business.tagline')}</p>
             <div className="mt-6 space-y-1 text-sm text-brand-cream/90">
-              <p>Business Address: {siteConfig.addressEn}</p>
-                <p>
-                  Office Phone: <a href={`tel:${siteConfig.officePhone.replace(/\D/g, '')}`} className="hover:text-brand-gold">
-                    {siteConfig.officePhone}
-                  </a>
-                </p>
-                <p>
-                  Mobile Phone: <a href={`tel:${siteConfig.mobilePhone.replace(/\D/g, '')}`} className="hover:text-brand-gold">
-                    {siteConfig.mobilePhone}
-                  </a>
-                </p>
-                <p>
-                  Fax Phone: <a href={`tel:${siteConfig.faxPhone.replace(/\D/g, '')}`} className="hover:text-brand-gold">
-                    {siteConfig.faxPhone}
-                  </a>
-                </p>
+              <p>{t('business.address')}</p>
               <p>
-                Email: <a href={`mailto:${siteConfig.email}`} className="hover:text-brand-gold">
+                <span className="text-brand-cream/60">{t('contact.officePhoneLabel')} </span>
+                <a
+                  href={`tel:${siteConfig.officePhone.replace(/\D/g, '')}`}
+                  className="hover:text-brand-gold"
+                >
+                  {siteConfig.officePhone}
+                </a>
+              </p>
+              <p>
+                <span className="text-brand-cream/60">{t('contact.mobilePhoneLabel')} </span>
+                <a
+                  href={`tel:${siteConfig.mobilePhone.replace(/\D/g, '')}`}
+                  className="hover:text-brand-gold"
+                >
+                  {siteConfig.mobilePhone}
+                </a>
+              </p>
+              <p>
+                <span className="text-brand-cream/60">{t('contact.faxPhoneLabel')} </span>
+                <span>{siteConfig.faxPhone}</span>
+              </p>
+              <p>
+                <span className="text-brand-cream/60">{t('contact.emailLabel')} </span>
+                <a href={`mailto:${siteConfig.email}`} className="hover:text-brand-gold">
                   {siteConfig.email}
                 </a>
               </p>
